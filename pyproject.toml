@@ -16,6 +16,7 @@ dependencies = [
     "requests>=2.31.0",
     "arxiv>=2.1.0",
     "fire>=0.6.0",
+    "tqdm>=4.66.4",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -23,6 +24,7 @@ requires-python = ">= 3.10"
 [project.scripts]
 my-hello-script = 'trpy:hello'
 generate-paper-list = "trpy.bin.generate_paper_list:main"
+search-papers = "trpy.bin.search_arxiv:main"
 
 [tool.rye]
 managed = true

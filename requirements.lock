@@ -37,5 +37,7 @@ soupsieve==2.5
     # via beautifulsoup4
 termcolor==2.4.0
     # via fire
+tqdm==4.66.4
+    # via paper-reader
 urllib3==2.2.1
     # via requests
