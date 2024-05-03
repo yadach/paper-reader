@@ -8,12 +8,18 @@
 #   with-sources: false
 
 -e file:.
+arxiv==2.1.0
+    # via paper-reader
 beautifulsoup4==4.12.3
     # via paper-reader
 certifi==2024.2.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
+feedparser==6.0.10
+    # via arxiv
+fire==0.6.0
+    # via paper-reader
 idna==3.7
     # via requests
 lxml==5.2.1
@@ -21,8 +27,15 @@ lxml==5.2.1
 pyyaml==6.0.1
     # via paper-reader
 requests==2.31.0
+    # via arxiv
     # via paper-reader
+sgmllib3k==1.0.0
+    # via feedparser
+six==1.16.0
+    # via fire
 soupsieve==2.5
     # via beautifulsoup4
+termcolor==2.4.0
+    # via fire
 urllib3==2.2.1
     # via requests

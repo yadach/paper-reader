@@ -14,12 +14,15 @@ dependencies = [
     "beautifulsoup4>=4.12.3",
     "lxml>=5.2.1",
     "requests>=2.31.0",
+    "arxiv>=2.1.0",
+    "fire>=0.6.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
 
 [project.scripts]
 my-hello-script = 'trpy:hello'
+generate-paper-list = "trpy.bin.generate_paper_list:main"
 
 [tool.rye]
 managed = true

@@ -8,6 +8,8 @@
 #   with-sources: false
 
 -e file:.
+arxiv==2.1.0
+    # via paper-reader
 beautifulsoup4==4.12.3
     # via paper-reader
 certifi==2024.2.2
@@ -18,8 +20,12 @@ charset-normalizer==3.3.2
     # via requests
 distlib==0.3.8
     # via virtualenv
+feedparser==6.0.10
+    # via arxiv
 filelock==3.13.4
     # via virtualenv
+fire==0.6.0
+    # via paper-reader
 identify==2.5.36
     # via pre-commit
 idna==3.7
@@ -35,10 +41,17 @@ pyyaml==6.0.1
     # via paper-reader
     # via pre-commit
 requests==2.31.0
+    # via arxiv
     # via paper-reader
 ruff==0.4.1
+sgmllib3k==1.0.0
+    # via feedparser
+six==1.16.0
+    # via fire
 soupsieve==2.5
     # via beautifulsoup4
+termcolor==2.4.0
+    # via fire
 urllib3==2.2.1
     # via requests
 virtualenv==20.25.3

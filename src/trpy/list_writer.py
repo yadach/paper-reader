@@ -24,4 +24,3 @@ def write_list(info_list: list, output: str) -> None:
             raise NameError(
                 f"{output} is not supported format, only support .csv and .json format."
             )
-    print("hoge")
