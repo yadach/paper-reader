@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "python-template"
+version = "0.1.0"
+description = "Python project template with rye."
+authors = [
+    { name = "yadach", email = "47210083+yadach@users.noreply.github.com" }
+]
+dependencies = [
+    "pyyaml>=6.0.1",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[project.scripts]
+my-hello-script = 'python_template_rye:hello'
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.4.1",
+    "pre-commit>=3.7.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/python_template"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.lint.isort]
+force-single-line = true
