@@ -8,5 +8,21 @@
 #   with-sources: false
 
 -e file:.
+beautifulsoup4==4.12.3
+    # via paper-reader
+certifi==2024.2.2
+    # via requests
+charset-normalizer==3.3.2
+    # via requests
+idna==3.7
+    # via requests
+lxml==5.2.1
+    # via paper-reader
 pyyaml==6.0.1
-    # via python-template
+    # via paper-reader
+requests==2.31.0
+    # via paper-reader
+soupsieve==2.5
+    # via beautifulsoup4
+urllib3==2.2.1
+    # via requests

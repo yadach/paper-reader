@@ -3,5 +3,6 @@
         "editorconfig.editorconfig",
         "ms-python.python",
         "charliermarsh.ruff",
+        "njpwerner.autodocstring",
     ]
 }

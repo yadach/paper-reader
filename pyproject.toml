@@ -3,20 +3,23 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "python-template"
+name = "paper-reader"
 version = "0.1.0"
-description = "Python project template with rye."
+description = "Tools for reading papers."
 authors = [
     { name = "yadach", email = "47210083+yadach@users.noreply.github.com" }
 ]
 dependencies = [
     "pyyaml>=6.0.1",
+    "beautifulsoup4>=4.12.3",
+    "lxml>=5.2.1",
+    "requests>=2.31.0",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
 
 [project.scripts]
-my-hello-script = 'python_template_rye:hello'
+my-hello-script = 'trpy:hello'
 
 [tool.rye]
 managed = true
@@ -26,7 +29,7 @@ dev-dependencies = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/python_template"]
+packages = ["src/trpy"]
 
 [tool.ruff.format]
 quote-style = "double"
