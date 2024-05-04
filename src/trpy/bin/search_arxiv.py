@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-# Script for searching papers.
+"""Script for searching papers."""
 
 import csv
+from pathlib import Path
 
 import arxiv
 from fire import Fire
@@ -13,8 +14,8 @@ from trpy.list_writer import write_list
 def search_on_arxiv(
     list_file: str,
     output: str = "arxiv_list.csv",
-    keys: list = ["entry_id", "pdf_url", "summary"],
-):
+    keys: list | None = None,
+) -> None:
     """Search paper and add information from arXiv.
 
     Args:
@@ -22,9 +23,11 @@ def search_on_arxiv(
         output (str, optional): Output path. Defaults to "arxiv_list.csv".
         keys (list, optional): Keys of target. Defaults to ["entry_id", "pdf_url", "summary"].
     """
-    with open(list_file, "rt") as file:
+    if keys is None:
+        keys = ["entry_id", "pdf_url", "summary"]
+    with Path(list_file).open("rt") as file:
         reader = csv.DictReader(file)
-        paper_list = [row_dict for row_dict in reader]
+        paper_list = list(reader)
 
     client = arxiv.Client()
     for paper_info in tqdm(paper_list):
@@ -40,7 +43,8 @@ def search_on_arxiv(
     write_list(info_list=paper_list, output=output)
 
 
-def main():
+def main() -> None:
+    """Search paper and add information from arXiv."""
     Fire(search_on_arxiv)
 
 

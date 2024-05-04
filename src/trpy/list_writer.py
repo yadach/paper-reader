@@ -1,5 +1,8 @@
+"""Module for writing list."""
+
 import csv
 import json
+from pathlib import Path
 
 
 def write_list(info_list: list, output: str) -> None:
@@ -9,7 +12,7 @@ def write_list(info_list: list, output: str) -> None:
         info_list (list): List of info.
         output (str): Output path(csv or json file).
     """
-    with open(output, "wt", encoding="utf-8") as file:
+    with Path(output).open("wt", encoding="utf-8") as file:
         if output.endswith("csv"):
             writer = csv.writer(file)
             for i, info in enumerate(info_list):
@@ -21,6 +24,5 @@ def write_list(info_list: list, output: str) -> None:
         elif output.endswith("json"):
             json.dump(info_list, file, indent=4, ensure_ascii=False)
         else:
-            raise NameError(
-                f"{output} is not supported format, only support .csv and .json format."
-            )
+            msg = f"{output} is not supported format, only support .csv and .json format."
+            raise NameError(msg)

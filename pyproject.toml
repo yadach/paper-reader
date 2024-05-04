@@ -37,9 +37,16 @@ dev-dependencies = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/trpy"]
 
+[tool.ruff]
+line-length = 120
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["ANN101", "D101", "D203", "D213", "D407", "D413", "S101"]
 
 [tool.ruff.lint.isort]
 force-single-line = true
