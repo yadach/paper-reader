@@ -26,6 +26,7 @@ requires-python = ">= 3.10"
 generate-paper-list = "trpy.bin.generate_paper_list:main"
 search-papers = "trpy.bin.search_arxiv:main"
 translate-summaries = "trpy.bin.translate_summaries:main"
+convert-list = "trpy.bin.convert_list:main"
 
 [tool.rye]
 managed = true

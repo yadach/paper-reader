@@ -2,13 +2,11 @@
 
 """Script for searching papers."""
 
-import csv
-from pathlib import Path
-
 import arxiv
 from fire import Fire
 from tqdm import tqdm
-from trpy.list_writer import write_list
+from trpy.list_io import read_list
+from trpy.list_io import write_list
 
 
 def search_on_arxiv(
@@ -25,10 +23,8 @@ def search_on_arxiv(
     """
     if keys is None:
         keys = ["entry_id", "pdf_url", "summary"]
-    with Path(list_file).open("rt") as file:
-        reader = csv.DictReader(file)
-        paper_list = list(reader)
 
+    paper_list = read_list(list_file)
     client = arxiv.Client()
     for paper_info in tqdm(paper_list):
         search = arxiv.Search(

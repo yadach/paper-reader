@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 from fire import Fire
 from trpy import readers
-from trpy.list_writer import write_list
+from trpy.list_io import write_list
 
 
 def generate_paper_list(conf_file: str, output: str = "paper_list.csv") -> None:

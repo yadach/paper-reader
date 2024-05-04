@@ -2,12 +2,10 @@
 
 """Translate abstract of papers."""
 
-import csv
-from pathlib import Path
-
 from fire import Fire
 from trpy import translators
-from trpy.list_writer import write_list
+from trpy.list_io import read_list
+from trpy.list_io import write_list
 
 
 def translate_abstract(
@@ -30,9 +28,7 @@ def translate_abstract(
         translator_params = {"model": "gpt-3.5-turbo"}
     if keys is None:
         keys = ["summary"]
-    with Path(list_file).open("rt") as file:
-        reader = csv.DictReader(file)
-        paper_list = list(reader)
+    paper_list = read_list(list_file)
     translator = getattr(translators, translator)(**translator_params)
     translated_paper_list = translator.translate(paper_list, keys=keys)
     write_list(info_list=translated_paper_list, output=output)
