@@ -14,12 +14,18 @@ dependencies = [
     "beautifulsoup4>=4.12.3",
     "lxml>=5.2.1",
     "requests>=2.31.0",
+    "arxiv>=2.1.0",
+    "fire>=0.6.0",
+    "tqdm>=4.66.4",
+    "openai>=1.25.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.10"
 
 [project.scripts]
-my-hello-script = 'trpy:hello'
+generate-paper-list = "trpy.bin.generate_paper_list:main"
+search-papers = "trpy.bin.search_arxiv:main"
+translate-summaries = "trpy.bin.translate_summaries:main"
 
 [tool.rye]
 managed = true
@@ -31,9 +37,16 @@ dev-dependencies = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/trpy"]
 
+[tool.ruff]
+line-length = 120
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["ANN101", "D101", "D203", "D213", "D407", "D413", "S101"]
 
 [tool.ruff.lint.isort]
 force-single-line = true

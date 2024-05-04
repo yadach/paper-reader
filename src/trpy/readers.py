@@ -1,7 +1,8 @@
+"""Paper List Page Crawlers."""
+
 import re
 from abc import ABCMeta
 from abc import abstractmethod
-from typing import Any
 
 import requests
 from bs4 import BeautifulSoup
@@ -11,8 +12,12 @@ class BaseReader(metaclass=ABCMeta):
     def __init__(
         self,
         url: str,
-        **kwargs: dict[str, Any],
     ) -> None:
+        """Reader class.
+
+        Args:
+            url (str): URL of paper list.
+        """
         self.url = url
         self.paper_list = None
 
@@ -20,12 +25,20 @@ class BaseReader(metaclass=ABCMeta):
     def get_list(self) -> list:
         """Get paper list.
 
-        Returns:
+        Returns
             list: List of paper information.
         """
-        pass
 
     def filter(self, target: str, keyword: str) -> dict:
+        """Filter list.
+
+        Args:
+            target (str): Key to search.
+            keyword (str): Keywords to be searched.
+
+        Returns:
+            dict: _description_
+        """
         if self.paper_list is None:
             self.paper_list = self.get_list()
         filtered_list = []
@@ -40,13 +53,22 @@ class CVPR2024Reader(BaseReader):
     def __init__(
         self,
         url: str,
-        **kwargs: dict[str, Any],
     ) -> None:
-        super().__init__(url=url, **kwargs)
+        """Reader class for CVPR2024.
+
+        Args:
+            url (str): URL of paper list.
+        """
+        super().__init__(url=url)
         self.url = url
 
     def get_list(self) -> list:
-        res = requests.get(self.url)
+        """Get list of papers.
+
+        Returns
+            list: List of paper information.
+        """
+        res = requests.get(self.url, timeout=10)
         soup = BeautifulSoup(res.text, "html.parser")
         table = soup.find("table")
         contents = table.find_all("tr")
