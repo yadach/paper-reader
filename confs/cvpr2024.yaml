@@ -1,4 +1,4 @@
-type: CVPR2024Reader
+type: CVPR2024Crawler
 url: https://cvpr.thecvf.com/Conferences/2024/AcceptedPapers
 filter:
   target: title
