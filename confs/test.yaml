@@ -1,0 +1,16 @@
+crawler: CVPR2024Crawler
+options:
+  url: https://cvpr.thecvf.com/Conferences/2024/AcceptedPapers
+  filter_op:
+    target: title
+    keyword: DetCLIPv3
+  arxiv_op:
+    use: True
+    keys:
+      - entry_id
+      - pdf_url
+      - summary
+  llm_op:
+    config: confs/prompt/summarize_abstruct.yaml
+    in_key:
+    out_key:

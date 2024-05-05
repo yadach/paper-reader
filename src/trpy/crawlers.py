@@ -4,13 +4,15 @@ import copy
 import re
 from abc import ABCMeta
 from abc import abstractmethod
+from pathlib import Path
 
 import arxiv
 import requests
+import yaml
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
-from trpy import translators
+from trpy import llms
 
 
 class BaseCrawler(metaclass=ABCMeta):
@@ -19,7 +21,7 @@ class BaseCrawler(metaclass=ABCMeta):
         url: str,
         filter_op: dict,
         arxiv_op: dict,
-        translate_op: dict,
+        llm_op: dict,
     ) -> None:
         """BaseCrawler class.
 
@@ -27,17 +29,17 @@ class BaseCrawler(metaclass=ABCMeta):
             url (str): URL of paper list.
             filter_op (dict): Filter options.
             arxiv_op (dict): arXiv options.
-            translate_op (dict): Translation options.
+            llm_op (dict): LLM processing options.
         """
         self.url = url
         self.filter_op = filter_op
         self.arxiv_op = arxiv_op
-        self.translate_op = translate_op
+        self.llm_op = llm_op
         self.paper_list_base = None
         self.paper_list = None
 
         self.arxiv_client = arxiv.Client()
-        self._set_translator(translate_op)
+        self._set_llm(llm_op)
 
     @abstractmethod
     def get_list(self) -> list:
@@ -51,14 +53,14 @@ class BaseCrawler(metaclass=ABCMeta):
         self,
         filter_op: dict | None = None,
         arxiv_op: dict | None = None,
-        translate_op: dict | None = None,
+        llm_op: dict | None = None,
     ) -> list[dict]:
         """Generate list of papers.
 
         Args:
             filter_op (dict | None, optional): Options of filter. Defaults to None.
             arxiv_op (dict | None, optional): Options of arxiv. Defaults to None.
-            translate_op (dict | None, optional): Options of translation. Defaults to None.
+            llm_op (dict | None, optional): Options of LLM processing. Defaults to None.
 
         Returns:
             list[dict]: List of paper information.
@@ -67,12 +69,12 @@ class BaseCrawler(metaclass=ABCMeta):
             filter_op = self.filter_op
         if arxiv_op is None:
             arxiv_op = self.arxiv_op
-        if translate_op is None:
-            translate_op = self.translate_op
+        if llm_op is None:
+            llm_op = self.llm_op
         paper_list = self.get_list()
         paper_list = self.filter(paper_list=paper_list, **filter_op)
         paper_list = self.add_arxiv_info(paper_list=paper_list, **arxiv_op)
-        return self.translate(paper_list=paper_list, **translate_op)
+        return self.llm_process(paper_list=paper_list, **llm_op)
 
     def filter(self, paper_list: list[dict], target: str, keyword: str) -> list[dict]:
         """Filter list.
@@ -119,41 +121,50 @@ class BaseCrawler(metaclass=ABCMeta):
         arxived_info_dict = copy.deepcopy(info_dict)
         search = arxiv.Search(
             query=info_dict.get("title"),
-            max_results=1,
+            max_results=10,
             sort_by=arxiv.SortCriterion.Relevance,
         )
+        for key in keys:
+            arxived_info_dict[key] = ""
         for r in self.arxiv_client.results(search):
-            for key in keys:
-                val = getattr(r, key).replace("\n", " ")  # remove line breaks
-                arxived_info_dict[key] = val if r.title == info_dict.get("title") else ""
+            if r.title == info_dict.get("title"):
+                for key in keys:
+                    val = getattr(r, key).replace("\n", " ")  # remove line breaks
+                    arxived_info_dict[key] = val
+                break
         return arxived_info_dict
 
-    def translate(
+    def llm_process(
         self,
         paper_list: list[dict],
-        keys: list[str] | None = None,
-        translator: str | None = None,
-        options: dict | None = None,
+        in_key: str | None = None,
+        out_key: str | None = None,
+        **kwargs: any,  # noqa: ARG002
     ) -> list[dict]:
-        """Translate information.
+        """Process paper list.
 
         Args:
-            paper_list (list[dict]): List of paper information.
-            keys (list[str] | None, optional): Key to translate. Defaults to None.
-            translator (str): API to translator. Defaults to None.
-            options (dict): Translator options. Defaults to None.
+            paper_list (list): List of paper information.
+            in_key (str): Target key to be processed.
+            out_key (str): Output key.
+            kwargs (any): Other options.
 
         Returns:
-            list[dict]: Translated list of paper information.
+            list: Translated list of paper information.
         """
-        if keys is None:
-            keys = []
-        if translator is not None:
-            self._set_translator(translate_op={"translator": translator, "options": options})
-        return self.translator.translate(paper_list=paper_list, keys=keys)
+        if in_key is None:
+            return paper_list
+        if out_key is None:
+            out_key = f"{in_key}_llm"
+        return self.llm.process(paper_list=paper_list, in_key=in_key, out_key=out_key)
 
-    def _set_translator(self, translate_op: dict) -> None:
-        self.translator = getattr(translators, translate_op.get("translator"))(**translate_op.get("options"))
+    def _set_llm(self, llm_op: dict) -> None:
+        if isinstance(llm_op.get("config"), str):
+            with Path(llm_op.get("config")).open("rt") as file:
+                llm_config = yaml.safe_load(file)
+        else:
+            llm_config = llm_op.get("config")
+        self.llm = getattr(llms, llm_config.get("llm"))(**llm_config)
 
 
 class CVPR2024Crawler(BaseCrawler):
@@ -162,21 +173,21 @@ class CVPR2024Crawler(BaseCrawler):
         url: str,
         filter_op: dict,
         arxiv_op: dict,
-        translate_op: dict,
+        llm_op: dict,
     ) -> None:
-        """Crawler class for CVPR2024.
+        """Crawler for CVPR2024.
 
         Args:
             url (str): URL of paper list.
             filter_op (dict): Filter options.
             arxiv_op (dict): arXiv options.
-            translate_op (dict): Translation options.
+            llm_op (dict): LLM processing options.
         """
         super().__init__(
             url=url,
             filter_op=filter_op,
             arxiv_op=arxiv_op,
-            translate_op=translate_op,
+            llm_op=llm_op,
         )
 
     def get_list(self) -> list:

@@ -10,9 +10,7 @@ options:
       - entry_id
       - pdf_url
       - summary
-  translate_op:
-    translator: OpenAITranslator
-    options:
-      model: gpt-3.5-turbo
-    keys:
-      - summary
+  llm_op:
+    config: confs/prompt/summarize_abstruct.yaml
+    in_key:
+    out_key:

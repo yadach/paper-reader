@@ -30,7 +30,12 @@ def read_list(list_file: str) -> list[dict]:
     return dict_list
 
 
-def write_list(info_list: list, output: str, index_key: str = "title", drop_keys: list[str] | None = None) -> None:
+def write_list(  # noqa: C901
+    info_list: list,
+    output: str,
+    index_key: str = "title",
+    drop_keys: list[str] | None = None,
+) -> None:
     """Write list of infomation.
 
     Args:
@@ -61,5 +66,8 @@ def write_list(info_list: list, output: str, index_key: str = "title", drop_keys
                 for key, val in info.items():
                     if key in [index_key, *drop_keys] or val == "":
                         continue
-                    md_txt += f"- {key}: {val}\n"
+                    if len(val) < 200:  # noqa: PLR2004
+                        md_txt += f"- {key}: {val}\n"
+                    else:
+                        md_txt += f"\n**{key}**\n\n{val}\n"
             file.write(md_txt)
