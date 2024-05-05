@@ -31,7 +31,7 @@ def convert_to_md(list_file: str, drop_keys: list[dict] | None = None) -> None:
     if drop_keys is None:
         drop_keys = ["summary", "pdf_url"]
     in_fmt = list_file.split(".")[-1]
-    output = in_fmt.replace(in_fmt, "md")
+    output = list_file.replace(in_fmt, "md")
     convert_list(list_file=list_file, output=output, drop_keys=drop_keys)
 
 
