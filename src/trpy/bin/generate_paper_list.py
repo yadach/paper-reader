@@ -10,7 +10,7 @@ from trpy import crawlers
 from trpy.list_io import write_list
 
 
-def generate_paper_list(conf_file: str, output: str = "paper_list.csv", use_arxiv: bool = True) -> None:
+def generate_paper_list(conf_file: str, output: str = "paper_list.csv") -> None:
     """Ganerate list of papers.
 
     Args:
@@ -20,12 +20,8 @@ def generate_paper_list(conf_file: str, output: str = "paper_list.csv", use_arxi
     """
     with Path(conf_file).open("rt") as file:
         config = yaml.safe_load(file)
-    crawler = getattr(crawlers, config.get("type"))
-    page_reader = crawler(url=config.get("url"))
-    paper_list = page_reader.generate_list(
-        filter_options=config.get("filter"),
-        use_arxiv=use_arxiv,
-    )
+    crawler = getattr(crawlers, config.get("crawler"))(**config.get("options"))
+    paper_list = crawler.generate_list()
     write_list(info_list=paper_list, output=output)
 
 

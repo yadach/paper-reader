@@ -23,7 +23,7 @@ class BaseTranslator(metaclass=ABCMeta):
         Returns:
             list: Translated list of paper information.
         """
-        for paper_info in tqdm(paper_list):
+        for paper_info in tqdm(paper_list, desc="Translating"):
             for key in keys:
                 paper_info[f"{key}_ja"] = self._translate(paper_info[key]) if paper_info[key] != "" else ""
         return paper_list

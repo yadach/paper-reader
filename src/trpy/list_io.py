@@ -1,4 +1,4 @@
-"""Module for writing list."""
+"""Module to read and write list."""
 
 import csv
 import json
@@ -54,7 +54,7 @@ def write_list(info_list: list, output: str, index_key: str = "title", drop_keys
             json.dump(info_list, file, indent=4, ensure_ascii=False)
         elif out_fmt == "md":
             if drop_keys is None:
-                drop_keys = ["pdf_url"]
+                drop_keys = []
             md_txt = ""
             for info in info_list:
                 md_txt += f"### {info[index_key]}\n"

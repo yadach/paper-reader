@@ -27,6 +27,7 @@ generate-paper-list = "trpy.bin.generate_paper_list:main"
 search-papers = "trpy.bin.search_arxiv:main"
 translate-summaries = "trpy.bin.translate_summaries:main"
 convert-list = "trpy.bin.convert_list:main"
+convert-to-md = "trpy.bin.convert_list:conv2md"
 
 [tool.rye]
 managed = true
@@ -48,6 +49,9 @@ indent-style = "space"
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["ANN101", "D101", "D203", "D213", "D407", "D413", "FBT001", "FBT002", "S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/trpy/crawlers.py" = ["A00"]
 
 [tool.ruff.lint.isort]
 force-single-line = true

@@ -1,0 +1,18 @@
+crawler: CVPR2024Crawler
+options:
+  url: https://cvpr.thecvf.com/Conferences/2024/AcceptedPapers
+  filter_op:
+    target: title
+    keyword: 3D Object Detection
+  arxiv_op:
+    use: True
+    keys:
+      - entry_id
+      - pdf_url
+      - summary
+  translate_op:
+    translator: OpenAITranslator
+    options:
+      model: gpt-3.5-turbo
+    keys:
+      - summary
