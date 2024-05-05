@@ -11,23 +11,23 @@ An example of generating paper list of CVPR2024 is shown below.
 
 ```bash
 $ source .venv/bin/activate
-$ generate-paper-list confs/cvpr2024.yaml \
-    --output egs/cvpr2024/paper_list.csv
-$ head -n 3 egs/cvpr2024/paper_list.csv
-title,authers,url
-UniMODE: Unified Monocular 3D Object Detection,Zhuoling Li · Xiaogang Xu · Ser-Nam Lim · Hengshuang Zhao,
-GAFusion: Adaptive Fusing LiDAR and Camera with Multiple Guidance for 3D Object Detection,Xiaotian Li · Baojie Fan · Jiandong Tian · Huijie Fan,
+$ generate-paper-list configs/crawler/cvpr2024_3ddet.yaml \
+    --output egs/cvpr2024_3ddet.csv
+$ head -n 3 egs/cvpr2024_3ddet.csv
+title,authers,url,entry_id,pdf_url,summary,summary_ja
+UniMODE: Unified Monocular 3D Object Detection,Zhuoling Li · Xiaogang Xu · Ser-Nam Lim · Hengshuang Zhao,,,,,
+GAFusion: Adaptive Fusing LiDAR and Camera with Multiple Guidance for 3D Object Detection,Xiaotian Li · Baojie Fan · Jiandong Tian · Huijie Fan,,,,,
 ```
 
-Get paper data from arXiv.
+Summarize abstract
 ```bash
-$ search-papers egs/cvpr2024/paper_list.csv \
-    --output egs/cvpr2024/arxiv_list.csv
+$ summarize-abstract egs/cvpr2024_3ddet.csv \
+    --in_key summary \
+    --drop_keys ["summary","pdf_url"] \
+    --output egs/cvpr2024_3ddet.md
 ```
 
-Translate summaries.
+Convert to markdown.
 ```bash
-$ export OPENAI_API_KEY=open-api-key  # set OpenAI API key
-$ translate-summaries egs/cvpr2024/arxiv_list.csv \
-    --output egs/cvpr2024/translated_list.csv
+$ convert-to-md egs/cvpr2024_3ddet.csv
 ```
