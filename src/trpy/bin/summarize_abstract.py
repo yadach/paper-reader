@@ -15,7 +15,7 @@ def summarize_abstract(  # noqa: PLR0913
     list_file: str,
     in_key: str,
     out_key: str = "要約",
-    prompt_conf: str = "confs/prompt/summarize_abstruct.yaml",
+    prompt_conf: str = "configs/prompt/summarize_abstruct.yaml",
     output: str | None = None,
     drop_keys: list[str] | None = None,
 ) -> None:
@@ -25,7 +25,7 @@ def summarize_abstract(  # noqa: PLR0913
         list_file (str): Path to list file.
         in_key (str): Input key to be processed.
         out_key (str, optional): Output key. Defaults to "要約".
-        prompt_conf (str, optional): Prompt config file. Defaults to "confs/prompt/summarize_abstruct.yaml".
+        prompt_conf (str, optional): Prompt config file. Defaults to "configs/prompt/summarize_abstruct.yaml".
         output (str | None, optional): Output file. Defaults to None.
         drop_keys (list[str] | None, optional): Drop keys. Defaults to None.
     """

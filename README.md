@@ -11,7 +11,7 @@ An example of generating paper list of CVPR2024 is shown below.
 
 ```bash
 $ source .venv/bin/activate
-$ generate-paper-list confs/crawler/cvpr2024_3ddet.yaml \
+$ generate-paper-list configs/crawler/cvpr2024_3ddet.yaml \
     --output egs/cvpr2024_3ddet.csv
 $ head -n 3 egs/cvpr2024_3ddet.csv
 title,authers,url,entry_id,pdf_url,summary,summary_ja

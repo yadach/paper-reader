@@ -11,6 +11,6 @@ options:
       - pdf_url
       - summary
   llm_op:
-    config: confs/prompt/summarize_abstruct.yaml
+    config: configs/prompt/summarize_abstruct.yaml
     in_key:
     out_key:
